@@ -7,6 +7,16 @@ provider:
   name: aws
   runtime: nodejs14.x
 
+plugins:
+  - serverless-plugin-typescript
+  - serverless-tscpaths # Refer - https://github.com/serverless/serverless-plugin-typescript/issues/96
+  - serverless-offline
+  - serverless-dotenv-plugin
+
+custom:
+  serverlessPluginTypescript:
+    tsConfigFileLocation: './tsconfig.json'  
+
 functions:
   hello:
     handler: handler.hello
@@ -14,6 +24,3 @@ functions:
       - httpApi:
           path: /
           method: get
-
-plugins:
-  - serverless-plugin-typescript
