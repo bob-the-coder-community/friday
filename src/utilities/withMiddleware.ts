@@ -1,10 +1,10 @@
 import { Context } from "aws-lambda";
 import { Callback, LambdaEvent, Middleware } from "@ts-types/utilities/withMiddleware";
-// import { connect } from "@services/database/mongodb";
+import { connect } from "@services/database/mongodb";
 
 export async function withMiddleWare(event: LambdaEvent, context: Context, ...args: (Middleware | Callback)[]): Promise<void> {
     /** Connect to Database */
-    // await connect();
+    await connect();
 
     if (args.length === 1) {
         return ((response) => (args[0] as Callback)(response))();
