@@ -1,9 +1,9 @@
-import jsonwebtoken from 'jsonwebtoken';
+import { sign } from 'jsonwebtoken';
 
 export const JWT = {
     Sign: async (userId: string): Promise<string> => {
         try {
-            const token = jsonwebtoken.sign({
+            const token = sign({
                 exp: Math.floor(Date.now() / 1000) + (60 * 60),
                 data: {
                     userId

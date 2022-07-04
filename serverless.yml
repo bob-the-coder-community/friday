@@ -1,11 +1,13 @@
-org: sanjayachar
-app: internal-oauth
-service: internal-oauth
+org: bobthecoder
+app: friday-oauth
+service: friday-oauth
 frameworkVersion: '3'
 
 provider:
   name: aws
   runtime: nodejs14.x
+  region: ap-south-1
+  stage: production
 
 plugins:
   - serverless-plugin-typescript
