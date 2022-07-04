@@ -5,6 +5,7 @@ import { connect } from "@services/database/mongodb";
 export async function withMiddleWare(event: LambdaEvent, context: Context, ...args: (Middleware | Callback)[]): Promise<void> {
     /** Connect to Database */
     await connect();
+    const hello = 'hi';
 
     if (args.length === 1) {
         return ((response) => (args[0] as Callback)(response))();

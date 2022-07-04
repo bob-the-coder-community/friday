@@ -17,7 +17,7 @@ plugins:
 
 custom:
   serverlessPluginTypescript:
-    tsConfigFileLocation: './tsconfig.json'  
+    tsConfigFileLocation: './tsconfig.json' 
 
 functions:
   Login:
@@ -33,3 +33,10 @@ functions:
       - httpApi:
           path: /authentication/callback
           method: get
+
+  Me:
+    handler: ./src/controllers/authentication/handler.Me
+    events:
+      - httpApi:
+          path: /authentication/me
+          method: get          

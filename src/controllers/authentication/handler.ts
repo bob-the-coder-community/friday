@@ -5,7 +5,7 @@ import { JWT } from "@utils/jwt";
 import { withMiddleWare } from "@utils/withMiddleware";
 import { Context } from "aws-lambda";
 
-const Login = async (event: LambdaEvent, context: Context, response: Function) => withMiddleWare(event, context, async (error: Error) => {
+const Login = async (event: LambdaEvent, context: Context) => withMiddleWare(event, context, async (error: Error) => {
     if (error) {
         return Promise.reject({ statusCode: 500, body: 'Internal Server Error' });
     }
@@ -19,7 +19,7 @@ const Login = async (event: LambdaEvent, context: Context, response: Function) =
     });
 });
 
-const Callback = async (event: LambdaEvent, context: Context, response: Function) => withMiddleWare(event, context, async (error: Error) => {
+const Callback = async (event: LambdaEvent, context: Context) => withMiddleWare(event, context, async (error: Error) => {
     if (error) {
         return Promise.reject({ statusCode: 500, body: 'Internal Server Error' });
     }
@@ -55,9 +55,30 @@ const Callback = async (event: LambdaEvent, context: Context, response: Function
             'location': process.env.STARK_URL,
         }
     });
-})
+});
+
+const Me = async (event: LambdaEvent, context: Context, response: Function) => withMiddleWare(event, context, async (error: Error) => {
+    try {
+        if (error) {
+            return response({ statusCode: 500, body: 'Internal Server Error' });
+        }
+
+        const { headers } = event;
+    
+        if (!headers.authorization) {
+            return response({ statusCode: 401, body: 'Token is missing' });
+        }
+        
+        const payload = await JWT.Verify(headers.authorization);
+        return response(null, { statusCode: 200, body: `${JSON.stringify(payload)}` });        
+    } catch (err) {
+        console.error(err);
+        return response({ statusCode: 401, body: 'Token is missing' });
+    }
+});
 
 export {
     Login,
     Callback,
+    Me,
 }
