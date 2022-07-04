@@ -1,6 +1,7 @@
 import { User } from "@controllers/user";
 import { Google } from "@services/google";
 import { LambdaEvent } from "@ts-types/utilities/withMiddleware";
+import { JWT } from "@utils/jwt";
 import { withMiddleWare } from "@utils/withMiddleware";
 import { Context } from "aws-lambda";
 
@@ -36,7 +37,7 @@ const Callback = (event: LambdaEvent, context: Context, response: Function) => w
     const tokens = await Google.Oauth.GetToken(code);
     const profile = await Google.Oauth.GetProfile(tokens);
 
-    const user = await User.Service.CreateOrUpdate({
+    const { _id } = await User.Service.CreateOrUpdate({
         name: {
             first: profile.given_name,
             last: profile.family_name,
@@ -45,9 +46,11 @@ const Callback = (event: LambdaEvent, context: Context, response: Function) => w
         domain: profile.hd,
     });
 
+    const token = await JWT.Sign(_id?.toString() as string);
+
     return response(null, {
         statusCode: 200,
-        body: JSON.stringify(user),
+        body: JSON.stringify(token),
     });
 })
 
