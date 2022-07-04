@@ -18,9 +18,16 @@ custom:
     tsConfigFileLocation: './tsconfig.json'  
 
 functions:
-  hello:
-    handler: handler.hello
+  Login:
+    handler: ./src/controllers/authentication/handler.Login
     events:
       - httpApi:
-          path: /
+          path: /authentication/login
+          method: get
+
+  LoginCallback:
+    handler: ./src/controllers/authentication/handler.Callback
+    events:
+      - httpApi:
+          path: /authentication/callback
           method: get
