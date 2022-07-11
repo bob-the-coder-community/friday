@@ -14,8 +14,16 @@
     ],
     "rewrites": [
       {
-        "source": "**",
-        "destination": "/index.html"
+        "source": "/authentication/login",
+        "function": "authentication-login"
+      },
+      {
+        "source": "/authentication/callback",
+        "function": "authentication-callback"
+      },
+      {
+        "source": "/authentication/profile",
+        "function": "authentication-profile"
       }
     ]
   },
