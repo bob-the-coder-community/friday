@@ -1,6 +1,6 @@
-import { v4 } from 'uuid';
-import StateModel from './state.model';
-import { IState } from './state.type';
+import {v4} from "uuid";
+import StateModel from "./state.model";
+import {IState} from "./state.type";
 
 export const Service = {
     Create: async (redirectUrl: string): Promise<string> => {
@@ -18,10 +18,10 @@ export const Service = {
     },
     Find: async (uuid: string): Promise<IState> => {
         try {
-            const document = await StateModel.findOne({ uuid });
+            const document = await StateModel.findOne({uuid});
             return Promise.resolve(document);
         } catch (err) {
             return Promise.reject(err);
         }
-    }
-}
+    },
+};

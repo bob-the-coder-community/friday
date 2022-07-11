@@ -9,9 +9,9 @@ const stateSchema = new Schema({
     redirectUrl: {
         type: String,
         requrired: true,
-    }
+    },
 }, {
-    timestamps: true
+    timestamps: true,
 });
 
 export default mongoose.models["auth-states"] || mongoose.model("auth-states", stateSchema);

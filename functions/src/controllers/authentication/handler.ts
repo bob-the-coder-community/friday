@@ -3,15 +3,15 @@ import {Google} from "@services/google";
 import {JWT} from "@utils/jwt";
 import {withMiddleWare} from "@utils/withMiddleware";
 import * as functions from "firebase-functions";
-import { Service } from '@controllers/authentication/state.service';
-import { IState } from "./state.type";
+import {Service} from "@controllers/authentication/state.service";
+import {IState} from "./state.type";
 
 const Login = (request: functions.https.Request, response: functions.Response) => withMiddleWare(request, response, async (error: Error) => {
     if (error) {
         return response.json({statusCode: 500, body: "Internal Server Error"});
     }
 
-    const { redirectUrl } = request.query;
+    const {redirectUrl} = request.query;
 
     const state: string = await Service.Create((redirectUrl || process.env.STARK_URL) as string);
     const link: string = await Google.Oauth.GetLink(state);

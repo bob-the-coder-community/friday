@@ -36,7 +36,12 @@ export const Google = {
                 return Promise.reject(err);
             }
         },
-        GetProfile: async (credentials: GetTokenResponse): Promise<any> => {
+        GetProfile: async (credentials: GetTokenResponse): Promise<{
+            given_name: string;
+            family_name: string;
+            email: string;
+            hd: string;
+        }> => {
             try {
                 const {data} = await axios({
                     baseURL: "https://www.googleapis.com",
