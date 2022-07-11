@@ -1,4 +1,4 @@
-import * as functions from 'firebase-functions';
+import * as functions from "firebase-functions";
 
 export type Callback = (param?: any) => void;
-export type Middleware = (request: functions.https.Request, response: functions.Response, next: Function) => void
+export type Middleware = (request: functions.https.Request, response: functions.Response, next: () => void) => void

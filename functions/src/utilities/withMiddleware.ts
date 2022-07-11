@@ -1,8 +1,19 @@
-import * as functions from 'firebase-functions';
-import { Callback, Middleware } from "@ts-types/utilities/withMiddleware";
-import { connect } from "@services/database/mongodb";
+import * as functions from "firebase-functions";
+import {Callback, Middleware} from "@ts-types/utilities/withMiddleware";
+import {connect} from "@services/database/mongodb";
 
-export async function withMiddleWare(request: functions.https.Request, response: functions.Response, ...args: (Middleware | Callback)[]): Promise<void> {
+/**
+ *
+ * @param request Firebase Functions request object
+ * @param response Firebase Functions response object
+ * @param args Callback | Callback[]
+ * @return null
+ */
+export async function withMiddleWare(
+    request: functions.https.Request,
+    response: functions.Response,
+    ...args: (Middleware | Callback)[]
+): Promise<void> {
     /** Connect to Database */
     await connect();
 

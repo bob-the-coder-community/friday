@@ -25,7 +25,8 @@
 			"@middlewares/*": [
 				"./src/middlewares/*"
 			]
-		}
+		},
+		"resolveJsonModule": true
 	},
 	"compileOnSave": true,
 	"include": [

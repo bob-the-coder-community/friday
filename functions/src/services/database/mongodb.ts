@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 mongoose.Promise = global.Promise;
-let isConnected: boolean = false;
+const isConnected = false;
 
 const connect = async () => {
     try {
@@ -10,12 +10,12 @@ const connect = async () => {
         }
 
         await mongoose.connect(process.env.MONGO_URI as string);
-        return Promise.resolve();      
+        return Promise.resolve();
     } catch (err) {
         return Promise.reject(err);
     }
-}
+};
 
 export {
     connect,
-}
+};

@@ -1,4 +1,4 @@
-import { sign, verify } from 'jsonwebtoken';
+import {sign, verify} from "jsonwebtoken";
 
 export const JWT = {
     Sign: async (userId: string): Promise<string> => {
@@ -6,8 +6,8 @@ export const JWT = {
             const token = sign({
                 exp: Math.floor(Date.now() / 1000) + (60 * 60),
                 data: {
-                    userId
-                }
+                    userId,
+                },
             }, process.env.JWT_SECRET_KEY as string);
 
             return Promise.resolve(token);
@@ -22,10 +22,10 @@ export const JWT = {
             }
 
             if (!decoded) {
-                return reject(new Error('Unable to decoded'))
+                return reject(new Error("Unable to decoded"));
             }
 
             return resolve(decoded as string);
         });
     }),
-}
+};

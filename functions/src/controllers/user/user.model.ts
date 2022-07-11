@@ -1,6 +1,6 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose, {Schema} from "mongoose";
 
-const user_schema = new Schema({
+const userSchema = new Schema({
     name: {
         first: {
             type: String,
@@ -11,7 +11,7 @@ const user_schema = new Schema({
             type: String,
             require: true,
             trim: true,
-        }
+        },
     },
     email: {
         type: String,
@@ -21,11 +21,11 @@ const user_schema = new Schema({
     domain: {
         type: String,
         required: true,
-        default: 'bobthecoder.org',
-        trim: true
-    }
+        default: "bobthecoder.org",
+        trim: true,
+    },
 }, {
     timestamps: true,
 });
 
-export default mongoose.models['users'] || mongoose.model('users', user_schema);
+export default mongoose.models["users"] || mongoose.model("users", userSchema);
