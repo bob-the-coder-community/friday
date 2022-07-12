@@ -26,16 +26,16 @@ jobs:
     - name: Create .env file
       uses: SpicyPizza/create-envfile@v1.3
       with:
-  		  envkey_MONGO_URI: ${{ secrets.MONGO_URI }}
-  		  envkey_HOST: ${{ secrets.HOST }}
-  		  envkey_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-  		  envkey_GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-  		  envkey_GOOGLE_DOMAIN: ${{ secrets.GOOGLE_DOMAIN }}
-  		  envkey_JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
-  		  envkey_STARK_URL: ${{ secrets.STARK_URL }}		
-        directory: ./functions
-        file_name: .env
-        fail_on_empty: false
+       envkey_MONGO_URI: ${{ secrets.MONGO_URI }}
+       envkey_HOST: ${{ secrets.HOST }}
+       envkey_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+       envkey_GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+       envkey_GOOGLE_DOMAIN: ${{ secrets.GOOGLE_DOMAIN }}
+       envkey_JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+       envkey_STARK_URL: ${{ secrets.STARK_URL }}
+       directory: ./functions
+       file_name: .env
+       fail_on_empty: false
     - name: install firebase
       run: npm i firebase-tools -g  
     - name: deploy
