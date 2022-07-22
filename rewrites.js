@@ -7,7 +7,7 @@ const __PREFIX__ = '';
 Object.keys(functions).forEach((item) => {
     Object.keys(functions[item]).forEach((name) => {
         rewrites.push({
-            source: `${__PREFIX__}/${item}/${name}`,
+            source: `${__PREFIX__}/${item.replace(/_/g, '-')}/${name}`,
             function: `${item}-${name}`
         })
     })

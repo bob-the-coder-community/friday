@@ -31,5 +31,7 @@ module.exports = {
         "max-len": ["error", 150],
         "new-cap": "off",
         "valid-jsdoc": "off",
+        "@typescript-eslint/ban-ts-comment": "off",
+        "@typescript-eslint/no-explicit-any": "off",
     },
 };

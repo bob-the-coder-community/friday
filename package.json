@@ -1,0 +1,23 @@
+{
+  "name": "friday-warpper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "rewrites.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bob-the-coder-community/friday.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bob-the-coder-community/friday/issues"
+  },
+  "homepage": "https://github.com/bob-the-coder-community/friday#readme",
+  "dependencies": {
+    "edit-json-file": "^1.7.0"
+  }
+}

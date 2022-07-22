@@ -1,11 +1,11 @@
-import * as sanityClient from '@sanity/client';
-import * as dayjs from 'dayjs';
+import * as sanityClient from "@sanity/client";
+import * as dayjs from "dayjs";
 
 // @ts-ignore
 const client = new sanityClient({
-    projectId: 'qutmmqvp',
-    dataset: 'production',
-    apiVersion: dayjs().format('YYYY-MM-DD'),
+    projectId: "qutmmqvp",
+    dataset: "production",
+    apiVersion: dayjs().format("YYYY-MM-DD"),
     token: process.env.SANITY_API_KEY,
     useCdn: false,
 });
@@ -21,14 +21,14 @@ const Sanity = {
     },
     Patch: async (id: string, value: any) => {
         try {
-            const result = await client.patch(id).set({ ...value }).commit();
+            const result = await client.patch(id).set({...value}).commit();
             return Promise.resolve(result);
         } catch (err) {
             return Promise.reject(err);
         }
-    }
-}
+    },
+};
 
 export {
     Sanity,
-}
+};

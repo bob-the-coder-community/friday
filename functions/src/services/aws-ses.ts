@@ -1,4 +1,4 @@
-import * as aws from 'aws-sdk';
+import * as aws from "aws-sdk";
 
 aws.config.update({
     region: process.env.AWS_REGION as string,
@@ -15,24 +15,24 @@ const AWS = {
                 const options: aws.SES.SendEmailRequest = {
                     Destination: {
                         ToAddresses: [to],
-                        CcAddresses: cc || []
+                        CcAddresses: cc || [],
                     },
                     Message: {
                         Body: {
                             Html: {
-                                Charset: 'UTF-8',
+                                Charset: "UTF-8",
                                 Data: body,
                             },
                         },
                         Subject: {
-                            Charset: 'UTF-8',
+                            Charset: "UTF-8",
                             Data: subject,
-                        }
+                        },
                     },
                     Source: from,
                     ReplyToAddresses: [
-                        'help@bobthecoder.org'
-                    ]
+                        "help@bobthecoder.org",
+                    ],
                 };
 
                 await SES.sendEmail(options).promise();
@@ -40,10 +40,10 @@ const AWS = {
             } catch (err) {
                 return Promise.reject(err);
             }
-        }
-    }
-}
+        },
+    },
+};
 
 export {
     AWS,
-}
+};
