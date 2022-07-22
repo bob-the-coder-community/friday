@@ -7,21 +7,21 @@
             <h1 style="font-size: 18px;text-align: center;margin: 0;font-weight: bold;color: #fff;">bobTheCoder.</h1>
         </div>
         <div class="main-body" style="padding: 25px;">
-            <h6 style="font-size: 16px;font-weight: normal;margin-bottom: 0;margin-top: 10px;">Hi, Sanjay</h6>
+            <h6 style="font-size: 16px;font-weight: normal;margin-bottom: 0;margin-top: 10px;">Hi, <%- name %></h6>
             <p style="font-size: 14px;">You've been invited to take a coding challange for the below role:</p>
             <table>
                 <tr style="margin-bottom: 20px;">
                     <td style="font-size: 14px;font-weight: bold;width: 100px;">Role:</td>
-                    <td style="font-size: 14px;">Senior Software Engineer</td>
+                    <td style="font-size: 14px;"><%- position.title %></td>
                 </tr>
                 <tr style="margin-bottom: 20px;">
                     <td style="font-size: 14px;font-weight: bold;width: 100px;">Company:</td>
-                    <td style="font-size: 14px;">Agilite Group</td>
+                    <td style="font-size: 14px;"><%- position.company %></td>
                 </tr>
                 <tr style="margin-bottom: 20px;">
                     <td style="font-size: 14px;font-weight: bold;width: 100px;">Website:</td>
                     <td style="font-size: 14px;">
-                        <a href="https://agilitegroup.com">https://agilitegroup.in</a>
+                        <a href="<%- position.website %>"><%- position.website %></a>
                     </td>
                 </tr>
                 <tr style="margin-bottom: 20px;">
@@ -34,7 +34,7 @@
                 style="margin-top: 30px;background: #000;padding: 12px 8px;color: #fff;border-radius: 4px;">
                 <tr style="margin-bottom: 20px;">
                     <td style="font-size: 14px;text-align: center;font-weight: bold;width: 100px;">
-                        <a href="https://bobthecoder.org"
+                        <a href="https://bobthecoder.org/test/<%- tid %>"
                             style="color: #fff;text-decoration: none;text-align: center;font-weight: normal;">Take
                             Test</a>
                     </td>
