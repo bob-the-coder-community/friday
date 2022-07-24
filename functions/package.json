@@ -16,6 +16,7 @@
   "main": "lib/index.js",
   "dependencies": {
     "@sanity/client": "^3.3.2",
+    "@types/showdown": "^2.0.0",
     "aws-sdk": "^2.1180.0",
     "axios": "^0.27.2",
     "dayjs": "^1.11.4",
@@ -23,13 +24,18 @@
     "firebase-admin": "^10.0.2",
     "firebase-functions": "^3.18.0",
     "googleapis": "^105.0.0",
+    "html-pdf": "^3.0.1",
     "inline-css": "^4.0.1",
+    "mailcomposer": "^4.0.2",
     "mongoose": "^6.4.3",
+    "showdown": "^2.1.0",
+    "showdown-highlight": "^3.0.0",
     "tsconfig-paths": "^4.0.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/ejs": "^3.1.1",
+    "@types/html-pdf": "^3.0.0",
     "@types/inline-css": "^3.0.1",
     "@types/node": "^18.0.3",
     "@types/uuid": "^8.3.4",
