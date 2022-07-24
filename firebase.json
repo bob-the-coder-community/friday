@@ -29,6 +29,14 @@
       {
         "source": "/testPlatform/invite",
         "function": "testPlatform-invite"
+      },
+      {
+        "source": "/testPlatform/jiraautomation",
+        "function": "testPlatform-jiraautomation"
+      },
+      {
+        "source": "/testPlatform/generatereport",
+        "function": "testPlatform-generatereport"
       }
     ]
   },

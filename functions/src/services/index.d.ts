@@ -1,1 +1,1 @@
-declare module 'mailcomposer';
+declare module "mailcomposer";

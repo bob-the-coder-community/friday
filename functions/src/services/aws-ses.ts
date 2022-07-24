@@ -1,5 +1,5 @@
 import * as aws from "aws-sdk";
-import * as mailcomposer from 'mailcomposer';
+import * as mailcomposer from "mailcomposer";
 
 aws.config.update({
     region: process.env.AWS_REGION as string,
@@ -17,7 +17,7 @@ const AWS = {
                 try {
                     const mail = mailcomposer({
                         from: from,
-                        replyTo: 'help@bobthecoder.org',
+                        replyTo: "help@bobthecoder.org",
                         to: to,
                         subject: subject,
                         html: body,
@@ -25,19 +25,19 @@ const AWS = {
                             path: attachment,
                         }] : [],
                     });
-    
+
                     mail.build(async (err: any, message: string) => {
                         if (err) {
                             return reject(err);
                         }
 
-                        await SES.sendRawEmail({ RawMessage: { Data: message } }).promise();
+                        await SES.sendRawEmail({RawMessage: {Data: message}}).promise();
                         return resolve(true);
                     });
                 } catch (err) {
                     return reject(err);
-                }                
-            })
+                }
+            });
         },
     },
 };
