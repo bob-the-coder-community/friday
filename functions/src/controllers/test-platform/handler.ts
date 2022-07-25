@@ -6,6 +6,7 @@ import {AWS} from "@services/aws-ses";
 import {Template} from "@services/template";
 import {Sanity} from "@services/sanity-client";
 import {markdown} from "@services/markdown";
+import {v4} from "uuid";
 
 const Invite = (request: functions.https.Request, response: functions.Response) => withMiddleWare(request, response, async (error: Error) => {
     if (error) {
@@ -34,7 +35,7 @@ const Invite = (request: functions.https.Request, response: functions.Response) 
     await AWS.SES.Send(
         process.env.FROM_ADDRESS as string,
         candidateEmail,
-        `Invitation: ${ options.position.title } at ${ options.position.company }`,
+        `Invitation: ${options.position.title} at ${options.position.company}`,
         template,
     );
 
@@ -48,14 +49,12 @@ const Jira = (request: functions.https.Request, response: functions.Response) =>
         }
 
         const {
-            fields: {
-                customfield_10032: candidateName,
-                customfield_10033: candidateEmail,
-                customfield_10041: jobId,
-            },
-        } = request.body;
+            job_id: jobId,
+            candidate_name: candidateName,
+            candidate_email: candidateEmail,
+        } = request.query;
 
-        const Position = (await Sanity.Query(`*[_type == "position" && jira_job_id == "${jobId}"]`))[0];
+        const Position = (await Sanity.Query(`*[_type == "position" && jira_job_id == "${decodeURI(jobId as string)}"]`))[0];
 
         if (!Position) {
             return response.status(400).json({message: "Position Not Found"});
@@ -63,17 +62,38 @@ const Jira = (request: functions.https.Request, response: functions.Response) =>
 
         const document = {
             _type: "invitation",
-            candidate_name: candidateName,
-            candidate_email: candidateEmail,
+            candidate_name: decodeURI(candidateName as string),
+            candidate_email: decodeURI(candidateEmail as string),
             state: "invitation-pending",
             position: [{
+                _key: v4(),
                 _ref: Position._id,
                 _type: "reference",
             }],
             meta: "{}",
+            _createdAt: new Date().toISOString(),
+            _updatedAt: new Date().toISOString(),
         };
 
-        await Sanity.Create(document);
+        const tid = await Sanity.Create(document);
+        const options = {
+            tid,
+            name: candidateName,
+            position: {
+                title: Position.title,
+                company: Position.company,
+                website: Position.website,
+            },
+        };
+
+        const template = await Template.Render(options, "email/test-invitation.ejs");
+        await AWS.SES.Send(
+            process.env.FROM_ADDRESS as string,
+            candidateEmail as string,
+            `Invitation: ${options.position.title} at ${options.position.company}`,
+            template,
+        );
+
         return response.status(200).json({message: "Success"});
     } catch (err) {
         console.error(err);
@@ -104,7 +124,7 @@ const GenerateReport = (request: functions.https.Request, response: functions.Re
         position: {
             title: positionInformation.title,
             company: positionInformation.company,
-            jiraLink: `https://bobthecompany.atlassian.net/browse/${ positionInformation.jira_job_id }`,
+            jiraLink: `https://bobthecompany.atlassian.net/browse/${positionInformation.jira_job_id}`,
         },
         timestamps: {
             invitation: dayjs(testInformation._createdAt).format("hh:mm a, DD MMM YYYY"),
@@ -132,7 +152,7 @@ const GenerateReport = (request: functions.https.Request, response: functions.Re
         await AWS.SES.Send(
             process.env.FROM_ADDRESS as string,
             process.env.TO_ADDRESS as string,
-            `bobTheCoder: Test Platform - Report - ${ data.candidate.name } - ${ data.position.company }`,
+            `bobTheCoder: Test Platform - Report - ${data.candidate.name} - ${data.position.company}`,
             "",
             [],
             fileName,

@@ -34,7 +34,7 @@ const Sanity = {
                 _id: v4(),
                 ...data,
             });
-            return Promise.resolve(document);
+            return Promise.resolve(document._id);
         } catch (err) {
             return Promise.reject(err);
         }

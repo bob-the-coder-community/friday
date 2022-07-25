@@ -2,7 +2,7 @@
   "name": "functions",
   "scripts": {
     "lint": "eslint --ext .js,.ts .",
-    "build": "tsc",
+    "build": "bash ./build.sh",
     "build:watch": "tsc --watch",
     "serve": "bash ./serve.sh",
     "shell": "npm run build && firebase functions:shell",
