@@ -1,12 +1,14 @@
 import * as functions from "firebase-functions";
 import * as dayjs from "dayjs";
-import * as htmlPdf from "html-pdf";
+import * as fs from "fs";
+// import * as htmlPdf from "html-pdf";
 import {withMiddleWare} from "@utils/withMiddleware";
 import {AWS} from "@services/aws-ses";
 import {Template} from "@services/template";
 import {Sanity} from "@services/sanity-client";
 import {markdown} from "@services/markdown";
 import {v4} from "uuid";
+import {Judge0} from "@services/judge0";
 
 const Invite = (request: functions.https.Request, response: functions.Response) => withMiddleWare(request, response, async (error: Error) => {
     if (error) {
@@ -64,7 +66,7 @@ const Jira = (request: functions.https.Request, response: functions.Response) =>
             _type: "invitation",
             candidate_name: decodeURI(candidateName as string),
             candidate_email: decodeURI(candidateEmail as string),
-            state: "invitation-pending",
+            state: "invitation-sent",
             position: [{
                 _key: v4(),
                 _ref: Position._id,
@@ -106,17 +108,21 @@ const GenerateReport = (request: functions.https.Request, response: functions.Re
         return response.status(500).json({message: "Internal Server Error"});
     }
 
-    const {testId} = request.body;
+    const testId = request.body.testId || request.query.testId;
+    const {inHtml} = request.query;
 
     const testInformation = (await Sanity.Query(`*[_type == "invitation" && _id == "${testId}"]`))[0];
     const positionInformation = (await Sanity.Query(`*[_type == "position" && _id == "${testInformation.position[0]._ref}"]`))[0];
-    const problems = (await Sanity.Query(`*[_type == "problem" && (${
-        positionInformation.problems.map((problem: { _ref: any; }) => `_id == "${problem._ref}"`).join("||")
-    })]`));
+    const problems = (
+        await Sanity.Query(`*[_type == "problem" && (${
+            positionInformation.problems.map((problem: { _ref: any; }) => `_id == "${problem._ref}"`).join("||")
+        })]`));
 
     const meta: any = JSON.parse(testInformation.meta);
+    const endTime: number = (meta.lastSync || Date.now()) / 1000;
 
     const data = {
+        tid: testId,
         candidate: {
             name: testInformation.candidate_name,
             email: testInformation.candidate_email,
@@ -129,37 +135,58 @@ const GenerateReport = (request: functions.https.Request, response: functions.Re
         timestamps: {
             invitation: dayjs(testInformation._createdAt).format("hh:mm a, DD MMM YYYY"),
             start: dayjs.unix(meta.startTime / 1000).format("hh:mm a, DD MMM YYYY"),
-            end: dayjs().format("hh:mm a, DD MMM YYYY"),
-            duration: dayjs().diff(dayjs.unix(meta.startTime / 1000), "minutes"),
+            end: dayjs.unix(endTime).format("hh:mm a, DD MMM YYYY"),
+            duration: dayjs.unix(endTime).diff(dayjs.unix(meta.startTime / 1000), "minutes"),
         },
         activities: [],
         codes: problems.map((problem) => ({
+            problem_id: problem._id,
             readme: markdown.parse(problem.problem),
-            code: markdown.parse("```" + meta.editor_cache.find((solution: any) => solution.problem_id === problem._id).source_code + "```"),
+            code: markdown.parse(meta.editor_cache.find((solution: any) => solution.problem_id === problem._id).source_code),
+            hiddenTests: problem.hidden_test,
+            expectedOutput: problem.expected_output,
         })),
     };
 
-    const html = await Template.Render(data, "report/test-report.ejs");
-    const fileName = `/tmp/${testId}-${Date.now()}.pdf`;
+    const executions = await Promise.all(
+        data.codes.map((code) =>
+            Judge0.Evaluate(
+                code.problem_id,
+                63,
+                meta.editor_cache.find((solution: any) => solution.problem_id === code.problem_id).source_code, code.hiddenTests,
+                code.expectedOutput
+            )
+        ),
+    );
 
-    return htmlPdf.create(html, {
-        format: "A4",
-    }).toFile(fileName, async (err) => {
-        if (err) {
-            return response.status(500).json({message: "Internal Server Error"});
-        }
+    data.codes = data.codes.map((code) => ({
+        ...code,
+        expectedOutput: markdown.parse(code.expectedOutput),
+        pass: executions.find((item) => item.problem_id === code.problem_id)?.pass ? "✅ Pass" : "⚠️ Failed",
+        stdout: markdown.parse(executions.find((item) => item.problem_id === code.problem_id)?.stdout),
+    }));
 
-        await AWS.SES.Send(
-            process.env.FROM_ADDRESS as string,
-            process.env.TO_ADDRESS as string,
-            `bobTheCoder: Test Platform - Report - ${data.candidate.name} - ${data.position.company}`,
-            "",
-            [],
-            fileName,
-        );
+    const report = await Template.Render(data, "report/test-report.ejs");
+    const email = await Template.Render(data, "email/test-completion.ejs");
+    const fileName = `/tmp/${testId}-${Date.now()}.html`;
 
-        return response.status(200).send({message: "Success"});
-    });
+    fs.writeFileSync(fileName, report);
+
+    if (inHtml) {
+        response.status(200).write(report);
+        return response.end();
+    }
+
+    await AWS.SES.Send(
+        process.env.FROM_ADDRESS as string,
+        process.env.TO_ADDRESS as string,
+        `bobTheCoder: Test Platform - Report - ${data.candidate.name} - ${data.position.company}`,
+        email,
+        [],
+        fileName,
+    );
+
+    return response.status(200).send({message: "Success"});
 });
 
 export const testPlatform = {

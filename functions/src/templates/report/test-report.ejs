@@ -1153,6 +1153,10 @@
         .markdown-body ::-webkit-calendar-picker-indicator {
             filter: invert(50%);
         }
+
+        .problems td {
+            vertical-align: baseline;
+        }
     </style>
 </head>
 
@@ -1213,7 +1217,7 @@
         </section>
 
         <!-- Activity -->
-        <section>
+        <!-- <section>
             <h6>Activity</h6>
             <table class="activity">
                 <thead>
@@ -1240,7 +1244,7 @@
                     </tr>
                 </tbody>
             </table>
-        </section>
+        </section> -->
 
         <!-- Challanges -->
         <section>
@@ -1249,8 +1253,16 @@
                 <tbody>
                     <% for(var i=0; i < codes.length; i++) { %>
                     <tr>
-                        <td width="50%"><%- codes[i].readme %></td>
-                        <td width="50%"><%- codes[i].code %></td>
+                        <td width="30%"><%- codes[i].readme %></td>
+                        <td width="40%"><%- codes[i].code %></td>
+                        <td width="15%">
+                          <strong>Expected output:</strong>
+                          <%- codes[i].expectedOutput %>
+                          <br/>
+                          <strong>Actual output:</strong>
+                          <%- codes[i].stdout %>
+                        </td>
+                        <td width="15%"><%- codes[i].pass %></td>
                     </tr>
                     <% } %>
                 </tbody>
@@ -1258,6 +1270,5 @@
         </section>
     </main>
 </body>
-​
 
 </html>
