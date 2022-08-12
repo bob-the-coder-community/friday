@@ -133,9 +133,9 @@ const GenerateReport = (request: functions.https.Request, response: functions.Re
             jiraLink: `https://bobthecompany.atlassian.net/browse/${positionInformation.jira_job_id}`,
         },
         timestamps: {
-            invitation: dayjs(testInformation._createdAt).add(330, 'minutes').format("hh:mm a, DD MMM YYYY"),
-            start: dayjs.unix(meta.startTime / 1000).add(330, 'minutes').format("hh:mm a, DD MMM YYYY"),
-            end: dayjs.unix(endTime).add(330, 'minutes').format("hh:mm a, DD MMM YYYY"),
+            invitation: dayjs(testInformation._createdAt).add(330, "minutes").format("hh:mm a, DD MMM YYYY"),
+            start: dayjs.unix(meta.startTime / 1000).add(330, "minutes").format("hh:mm a, DD MMM YYYY"),
+            end: dayjs.unix(endTime).add(330, "minutes").format("hh:mm a, DD MMM YYYY"),
             duration: dayjs.unix(endTime).diff(dayjs.unix(meta.startTime / 1000), "minutes"),
         },
         activities: [],
