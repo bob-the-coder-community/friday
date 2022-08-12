@@ -133,27 +133,28 @@ const GenerateReport = (request: functions.https.Request, response: functions.Re
             jiraLink: `https://bobthecompany.atlassian.net/browse/${positionInformation.jira_job_id}`,
         },
         timestamps: {
-            invitation: dayjs(testInformation._createdAt).format("hh:mm a, DD MMM YYYY"),
-            start: dayjs.unix(meta.startTime / 1000).format("hh:mm a, DD MMM YYYY"),
-            end: dayjs.unix(endTime).format("hh:mm a, DD MMM YYYY"),
+            invitation: dayjs(testInformation._createdAt).add(330, 'minutes').format("hh:mm a, DD MMM YYYY"),
+            start: dayjs.unix(meta.startTime / 1000).add(330, 'minutes').format("hh:mm a, DD MMM YYYY"),
+            end: dayjs.unix(endTime).add(330, 'minutes').format("hh:mm a, DD MMM YYYY"),
             duration: dayjs.unix(endTime).diff(dayjs.unix(meta.startTime / 1000), "minutes"),
         },
         activities: [],
         codes: problems.map((problem) => ({
-            problem_id: problem._id,
+            problemId: problem._id,
             readme: markdown.parse(problem.problem),
             code: markdown.parse(meta.editor_cache.find((solution: any) => solution.problem_id === problem._id).source_code),
             hiddenTests: problem.hidden_test,
             expectedOutput: problem.expected_output,
+            languageId: problem.language_id,
         })),
     };
 
     const executions = await Promise.all(
         data.codes.map((code) =>
             Judge0.Evaluate(
-                code.problem_id,
-                63,
-                meta.editor_cache.find((solution: any) => solution.problem_id === code.problem_id).source_code, code.hiddenTests,
+                code.problemId,
+                code.languageId,
+                meta.editor_cache.find((solution: any) => solution.problem_id === code.problemId).source_code, code.hiddenTests,
                 code.expectedOutput
             )
         ),
@@ -162,8 +163,8 @@ const GenerateReport = (request: functions.https.Request, response: functions.Re
     data.codes = data.codes.map((code) => ({
         ...code,
         expectedOutput: markdown.parse(code.expectedOutput),
-        pass: executions.find((item) => item.problem_id === code.problem_id)?.pass ? "✅ Pass" : "⚠️ Failed",
-        stdout: markdown.parse(executions.find((item) => item.problem_id === code.problem_id)?.stdout),
+        pass: executions.find((item) => item.problem_id === code.problemId)?.pass ? "✅ Pass" : "⚠️ Failed",
+        stdout: markdown.parse(executions.find((item) => item.problem_id === code.problemId)?.stdout),
     }));
 
     const report = await Template.Render(data, "report/test-report.ejs");
