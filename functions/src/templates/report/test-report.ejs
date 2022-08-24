@@ -1217,8 +1217,8 @@
         </section>
 
         <!-- Activity -->
-        <!-- <section>
-            <h6>Activity</h6>
+        <section>
+            <h6>Activities</h6>
             <table class="activity">
                 <thead>
                     <tr>
@@ -1228,23 +1228,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>4:00 PM, 26th March 2022</td>
-                        <td>Switched to a different tab</td>
-                        <td>
-                            <span class="severity-low">LOW</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>4:00 PM, 26th March 2022</td>
-                        <td>Copy/Cut/Paste</td>
-                        <td>
-                            <span class="severity-medium">MEDIUM</span>
-                        </td>
-                    </tr>
+                    <% for(var i=0; i < activities.length; i++) { %>
+                        <tr>
+                            <td><%- activities[i].timestamp %></td>
+                            <td><%- activities[i].action %></td>
+                            <td>
+                                <span class="severity-low">LOW</span>
+                            </td>
+                        </tr>                        
+                    <% } %>
                 </tbody>
             </table>
-        </section> -->
+        </section>
 
         <!-- Challanges -->
         <section>

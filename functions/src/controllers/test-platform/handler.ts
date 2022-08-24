@@ -138,7 +138,10 @@ const GenerateReport = (request: functions.https.Request, response: functions.Re
             end: dayjs.unix(endTime).add(330, "minutes").format("hh:mm a, DD MMM YYYY"),
             duration: dayjs.unix(endTime).diff(dayjs.unix(meta.startTime / 1000), "minutes"),
         },
-        activities: [],
+        activities: !meta.activities ? [] : meta.activities.map((activity: { timestamp: number; }) => ({
+            ...activity,
+            timestamp: dayjs.unix(activity.timestamp / 1000).add(330, 'minutes').format('hh:mm a, DD MMM YYYY')
+        })),
         codes: problems.map((problem) => ({
             problemId: problem._id,
             readme: markdown.parse(problem.problem),
