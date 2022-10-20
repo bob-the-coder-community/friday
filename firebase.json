@@ -41,6 +41,14 @@
       {
         "source": "/godseye/hirect",
         "function": "godseye-hirect"
+      },
+      {
+        "source": "/candidates/list",
+        "function": "candidates-list"
+      },
+      {
+        "source": "/candidates/profile",
+        "function": "candidates-profile"
       }
     ]
   },
