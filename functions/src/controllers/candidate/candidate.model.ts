@@ -1,5 +1,5 @@
-import mongoose, { Document, Schema } from 'mongoose';
-import { ICandidate } from './candidate.type';
+import mongoose, {Document, Schema} from "mongoose";
+import {ICandidate} from "./candidate.type";
 
 const model: Schema = new Schema({
     uid: {
@@ -35,8 +35,8 @@ const model: Schema = new Schema({
         },
         email: {
             type: String,
-            required: true
-        }
+            required: true,
+        },
     },
     skills: [{
         type: String,
@@ -66,9 +66,9 @@ const model: Schema = new Schema({
             },
             end: {
                 type: String,
-                required: true
-            }
-        }]
+                required: true,
+            },
+        }],
     },
     experience: {
         current: {
@@ -88,7 +88,7 @@ const model: Schema = new Schema({
             },
             designation: {
                 type: String,
-                required: true
+                required: true,
             },
             start: {
                 type: String,
@@ -96,7 +96,7 @@ const model: Schema = new Schema({
             },
             end: {
                 type: String,
-                required: true
+                required: true,
             },
             isPresent: {
                 type: Boolean,
@@ -104,20 +104,20 @@ const model: Schema = new Schema({
             },
             description: {
                 type: String,
-                required: true
-            }
+                required: true,
+            },
         }],
         total: {
             type: Number,
             required: true,
-        }
-    }
+        },
+    },
 }, {
     timestamps: {
-        createdAt: 'created_at',
-        updatedAt: 'updated_at',
-    }
+        createdAt: "created_at",
+        updatedAt: "updated_at",
+    },
 });
 
 
-export default (mongoose.models['candidates'] || mongoose.model('candidates', model) as unknown) as unknown as Document<ICandidate>;
+export default (mongoose.models["candidates"] || mongoose.model("candidates", model) as unknown) as unknown as Document<ICandidate>;

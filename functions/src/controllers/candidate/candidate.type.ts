@@ -7,14 +7,14 @@ export interface ICandidate {
     };
     bio: string;
     avatar: string;
-    gender: 'male' | 'female' | string;
+    gender: "male" | "female" | string;
     contact: {
         phone: string;
         email: string;
     };
     birth: {
         date: string;
-        age: number; 
+        age: number;
     };
     skills: string[];
     education: {

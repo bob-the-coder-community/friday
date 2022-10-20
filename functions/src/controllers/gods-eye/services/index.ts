@@ -1,1 +1,1 @@
-export * from '@controllers/gods-eye/services/hirect';
+export * from "@controllers/gods-eye/services/hirect";
