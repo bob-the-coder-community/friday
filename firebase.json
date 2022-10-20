@@ -37,6 +37,10 @@
       {
         "source": "/testPlatform/generatereport",
         "function": "testPlatform-generatereport"
+      },
+      {
+        "source": "/godseye/hirect",
+        "function": "godseye-hirect"
       }
     ]
   },
@@ -45,7 +49,7 @@
       "port": 5001
     },
     "hosting": {
-      "port": 5000
+      "port": 5002
     },
     "ui": {
       "enabled": true

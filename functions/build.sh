@@ -1,5 +1,5 @@
 # Build project
-tsc
+npx tsc
 
 # Copy template files
 cp -r ./src/templates ./lib/src
