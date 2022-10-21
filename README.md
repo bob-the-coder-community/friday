@@ -1,1 +1,4 @@
-# internal-auth
+# Friday
+The API Platform.
+
+# Authentication

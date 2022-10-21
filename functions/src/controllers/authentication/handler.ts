@@ -49,7 +49,7 @@ const Callback = (request: functions.https.Request, response: functions.Response
     const token = await JWT.Sign(_id?.toString() as string);
     const state: IState = await Service.Find(uuid as string);
 
-    response.setHeader("set-cookie", `sid=${token}; expires=${ new Date(Math.floor(Date.now() / 1000) + (60 * 60)) }`);
+    response.setHeader("set-cookie", `sid=${token}; expires=${new Date(Math.floor(Date.now() / 1000) + (60 * 60))};`);
     return response.redirect(state.redirectUrl as string);
 });
 

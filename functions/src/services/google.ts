@@ -5,7 +5,7 @@ import axios from "axios";
 const client = new google.auth.OAuth2(
     process.env.GOOGLE_CLIENT_ID,
     process.env.GOOGLE_CLIENT_SECRET,
-    `${process.env.HOST}/authentication/callback`
+    process.env.AUTH_CALLBACK_URL,
 );
 
 export const Google = {
