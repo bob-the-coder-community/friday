@@ -3,6 +3,7 @@ import {Hirect} from "@controllers/gods-eye/services";
 import * as functions from "firebase-functions";
 import {ICandidate} from "@controllers/candidate/candidate.type";
 import {Candidate} from "@controllers/candidate";
+import {Runner} from "@controllers/gods-eye/runner";
 
 const Init = (request: functions.https.Request, response: functions.Response) => withMiddleWare(request, response, async (error: Error) => {
     try {
@@ -13,8 +14,10 @@ const Init = (request: functions.https.Request, response: functions.Response) =>
         const {token, jobId} = request.body;
         const {data: {totalCount, refreshId}} = await Hirect.Get.Bulk(token, jobId as string, 1, 1, "");
 
+        const runnerId = await Runner.Init(jobId);
+
         // const totalCalls = Math.floor((Math.round(totalCount / 10) * 10) / 50);
-        const requests: any[] = (new Array(1).fill(" ")).map((_i, i) => i + 1);
+        const requests: any[] = (new Array(3).fill(" ")).map((_i, i) => i + 1);
 
         const results: any[] = [];
         for await (const item of requests) {
@@ -71,6 +74,7 @@ const Init = (request: functions.https.Request, response: functions.Response) =>
         }
 
         await Candidate.Service.Insert.Bulk(candidates);
+        await Runner.Finish(runnerId, totalCount);
         return response.json({
             status: 200,
             message: {
@@ -82,6 +86,23 @@ const Init = (request: functions.https.Request, response: functions.Response) =>
     }
 });
 
+
+const List = (request: functions.https.Request, response: functions.Response) => withMiddleWare(request, response, async (error: Error) => {
+    try {
+        const documents = await Runner.List();
+        return response.json({
+            status: 200,
+            message: {
+                data: documents,
+                totalCount: documents.length,
+            },
+        });
+    } catch (err) {
+        return response.json({statusCode: 500, body: "Internal Server Error"});
+    }
+});
+
 export const godseye = {
     "hirect": functions.https.onRequest(Init),
+    "List": functions.https.onRequest(List),
 };

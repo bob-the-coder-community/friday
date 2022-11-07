@@ -43,6 +43,10 @@
         "function": "godseye-hirect"
       },
       {
+        "source": "/godseye/List",
+        "function": "godseye-List"
+      },
+      {
         "source": "/candidates/list",
         "function": "candidates-list"
       },
