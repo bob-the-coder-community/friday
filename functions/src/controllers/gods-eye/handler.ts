@@ -4,6 +4,7 @@ import * as functions from "firebase-functions";
 import {ICandidate} from "@controllers/candidate/candidate.type";
 import {Candidate} from "@controllers/candidate";
 import {Runner} from "@controllers/gods-eye/runner";
+import {cors} from "@middlewares/cors";
 
 const Init = (request: functions.https.Request, response: functions.Response) => withMiddleWare(request, response, async (error: Error) => {
     try {
@@ -16,8 +17,8 @@ const Init = (request: functions.https.Request, response: functions.Response) =>
 
         const runnerId = await Runner.Init(jobId);
 
-        // const totalCalls = Math.floor((Math.round(totalCount / 10) * 10) / 50);
-        const requests: any[] = (new Array(3).fill(" ")).map((_i, i) => i + 1);
+        const totalCalls = Math.floor((Math.round(totalCount / 10) * 10) / 50);
+        const requests: any[] = (new Array(totalCalls > 60 ? 60 : totalCalls).fill(" ")).map((_i, i) => i + 1);
 
         const results: any[] = [];
         for await (const item of requests) {
@@ -87,7 +88,7 @@ const Init = (request: functions.https.Request, response: functions.Response) =>
 });
 
 
-const List = (request: functions.https.Request, response: functions.Response) => withMiddleWare(request, response, async (error: Error) => {
+const List = (request: functions.https.Request, response: functions.Response) => withMiddleWare(request, response, cors, async (error: Error) => {
     try {
         const documents = await Runner.List();
         return response.json({
@@ -103,6 +104,8 @@ const List = (request: functions.https.Request, response: functions.Response) =>
 });
 
 export const godseye = {
-    "hirect": functions.https.onRequest(Init),
+    "hirect": functions.runWith({
+        timeoutSeconds: 539,
+    }).https.onRequest(Init),
     "List": functions.https.onRequest(List),
 };

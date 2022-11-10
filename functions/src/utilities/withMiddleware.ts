@@ -1,7 +1,6 @@
 import * as functions from "firebase-functions";
 import {Callback, Middleware} from "@ts-types/utilities/withMiddleware";
 import {connect} from "@services/database/mongodb";
-
 /**
  *
  * @param request Firebase Functions request object
