@@ -1,26 +1,26 @@
-import { withMiddleWare } from "@utils/withMiddleware";
-import { Hirect } from "@controllers/gods-eye/services";
+import {withMiddleWare} from "@utils/withMiddleware";
+import {Hirect} from "@controllers/gods-eye/services";
 import * as functions from "firebase-functions";
-import { ICandidate } from "@controllers/candidate/candidate.type";
-import { Candidate } from "@controllers/candidate";
-import { Runner } from "@controllers/gods-eye/runner";
-import { cors } from "@middlewares/cors";
-import { chunk } from 'lodash';
+import {ICandidate} from "@controllers/candidate/candidate.type";
+import {Candidate} from "@controllers/candidate";
+import {Runner} from "@controllers/gods-eye/runner";
+import {cors} from "@middlewares/cors";
+import {chunk} from "lodash";
 
 const sleep = (s: number) => new Promise((resolve) => {
     setTimeout(() => {
         resolve(true);
     }, s * 1000);
-})
+});
 
 const Init = (request: functions.https.Request, response: functions.Response) => withMiddleWare(request, response, async (error: Error) => {
     try {
         if (error) {
-            return response.json({ statusCode: 500, body: "Internal Server Error" });
+            return response.json({statusCode: 500, body: "Internal Server Error"});
         }
 
-        const { token, jobId } = request.body;
-        const { data: { totalCount, refreshId } } = await Hirect.Get.Bulk(token, jobId as string, 1, 1, "");
+        const {token, jobId} = request.body;
+        const {data: {totalCount, refreshId}} = await Hirect.Get.Bulk(token, jobId as string, 1, 1, "");
 
         const runnerId = await Runner.Init(jobId);
 
@@ -33,15 +33,14 @@ const Init = (request: functions.https.Request, response: functions.Response) =>
             results.push(await Hirect.Get.Bulk(token, jobId as string, item, 50, refreshId));
         }
 
-        
 
         for await (const item of chunk(results.map((item) => item.data.list).flat(2), 30)) {
             try {
-                console.log('Running Batch at', Date.now());
+                console.log("Running Batch at", Date.now());
                 const candidates: ICandidate[] = await Promise.all(item.map(async (candidate): Promise<ICandidate> => {
                     try {
-                        const { data } = await Hirect.Get.Profile(token, candidate.id as string);
-                        console.log('Fetched candidate information - ', data.firstName);
+                        const {data} = await Hirect.Get.Profile(token, candidate.id as string);
+                        console.log("Fetched candidate information - ", data.firstName);
                         return Promise.resolve({
                             uid: candidate.id,
                             name: {
@@ -92,11 +91,11 @@ const Init = (request: functions.https.Request, response: functions.Response) =>
                     }
                 }));
 
-                console.log('writing candidates information to database')
-                await Candidate.Service.Insert.Bulk(candidates)
-                console.log('waiting 1 second');
+                console.log("writing candidates information to database");
+                await Candidate.Service.Insert.Bulk(candidates);
+                console.log("waiting 1 second");
                 await sleep(1);
-                console.log('Completed a batch');
+                console.log("Completed a batch");
             } catch (err) {
                 console.error(err);
             }
@@ -111,7 +110,7 @@ const Init = (request: functions.https.Request, response: functions.Response) =>
         });
     } catch (err) {
         console.error(err);
-        return response.json({ statusCode: 500, body: "Internal Server Error" });
+        return response.json({statusCode: 500, body: "Internal Server Error"});
     }
 });
 
@@ -127,7 +126,7 @@ const List = (request: functions.https.Request, response: functions.Response) =>
             },
         });
     } catch (err) {
-        return response.json({ statusCode: 500, body: "Internal Server Error" });
+        return response.json({statusCode: 500, body: "Internal Server Error"});
     }
 });
 
