@@ -135,5 +135,5 @@ export const godseye = {
     "hirect": functions.runWith({
         timeoutSeconds: 539,
     }).https.onRequest(Init),
-    "List": functions.https.onRequest(List),
+    "list": functions.https.onRequest(List),
 };
