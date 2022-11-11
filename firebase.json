@@ -43,7 +43,7 @@
         "function": "godseye-hirect"
       },
       {
-        "source": "/godseye/List",
+        "source": "/godseye/list",
         "function": "godseye-List"
       },
       {
