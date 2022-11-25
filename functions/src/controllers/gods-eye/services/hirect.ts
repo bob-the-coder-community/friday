@@ -20,7 +20,19 @@ export const Hirect = {
                     },
                     headers: {
                         "x-idtoken": token,
+                        "accept": "application/json, text/plain, */*",
                         "content-type": "application/json;charset=UTF-8 application/json;charset=UTF-8",
+                        "user-agent":
+                        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
+                        "x-appversion": "2.1.0",
+                        "x-brand": "Mac OS",
+                        "x-deviceid": "f3997c2268393c3e44db9d6171c7d192",
+                        "x-model": "10.15.7",
+                        "x-os": "webapp",
+                        "x-region": "in",
+                        "x-role": "1",
+                        "x-timestamp": "1669025476626",
+                        "x-uid": "71c47b13261d43ba8516abc5e820",
                     },
                     data: {},
                 };
@@ -39,7 +51,19 @@ export const Hirect = {
                     url: `/hirect/candidate-service/recruiters/candidates/${candidateId}/profile`,
                     headers: {
                         "x-idtoken": token,
+                        "accept": "application/json, text/plain, */*",
                         "content-type": "application/json;charset=UTF-8 application/json;charset=UTF-8",
+                        "user-agent":
+                        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
+                        "x-appversion": "2.1.0",
+                        "x-brand": "Mac OS",
+                        "x-deviceid": "f3997c2268393c3e44db9d6171c7d192",
+                        "x-model": "10.15.7",
+                        "x-os": "webapp",
+                        "x-region": "in",
+                        "x-role": "1",
+                        "x-timestamp": "1669025476626",
+                        "x-uid": "71c47b13261d43ba8516abc5e820",
                     },
                 };
 

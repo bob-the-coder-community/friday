@@ -25,7 +25,7 @@ const Init = (request: functions.https.Request, response: functions.Response) =>
         const runnerId = await Runner.Init(jobId);
 
         const totalCalls = Math.floor((Math.round(totalCount / 10) * 10) / 50);
-        const requests: any[] = (new Array(totalCalls).fill(" ")).map((_i, i) => i + 1);
+        const requests: any[] = (new Array(totalCalls > 2 ? 2 : totalCalls).fill(" ")).map((_i, i) => i + 1);
 
         const results: any[] = [];
         for await (const item of requests) {
@@ -117,6 +117,10 @@ const Init = (request: functions.https.Request, response: functions.Response) =>
 
 const List = (request: functions.https.Request, response: functions.Response) => withMiddleWare(request, response, cors, async (error: Error) => {
     try {
+        if (error) {
+            return response.json({statusCode: 500, body: "Internal Server Error"});
+        }
+
         const documents = await Runner.List();
         return response.json({
             status: 200,

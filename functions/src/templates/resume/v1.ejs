@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resume Template</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap');
+
+        html,
+        body {
+            padding: 0;
+            margin: 0;
+            font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: #eee;
+        }
+
+        .page {
+            width: 25cm;
+            min-height: 29.7cm;
+            padding: 16px;
+            display: block;
+            margin: 0 auto;
+            background-color: #fff;
+            color: #222222;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .flex-container {
+            display: flex;
+            flex-direction: row;
+            margin: 10px;
+        }
+
+        .flex-container>.flex-item-name {
+            width: auto;
+            margin: 10px;
+            text-align: left;
+            padding: 10px;
+            overflow-wrap: break-word;
+        }
+
+        .flex-container>.flex-item-details {
+            width: 28%;
+            margin: 10px;
+            text-align: left;
+            padding: 10px;
+        }
+
+        .flex-container>.flex-item-desc {
+            width: 44%;
+            margin: 10px;
+            text-align: left;
+            padding: 10px;
+        }
+
+        .flex-container>.flex-item-summary {
+            width: 98%;
+            margin: 10px;
+            text-align: left;
+            padding: 10px;
+        }
+
+        .flex-container>.flex-item-school {
+            width: 74%;
+            margin: 10px;
+            text-align: left;
+            padding: 10px;
+        }
+
+        .flex-container>.flex-item-skillset {
+            width: 23%;
+            margin: 10px;
+            text-align: left;
+            padding: 10px;
+        }
+
+
+        .candidate-name {
+            font-size: 25px;
+            font-weight: 600;
+        }
+
+        .candidate-role {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .candidate-details {
+            font-weight: 500;
+            font-size: 14px;
+            text-decoration-line: underline;
+        }
+
+        .candidate-objective {
+            font-weight: 400;
+            font-size: 14px;
+            text-align: justify;
+        }
+
+        .candidate-experience,
+        .candidate-education,
+        .candidate-skills,
+        .candidate-project,
+        .candidate-school {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .candidate-role,
+        .candidate-degree {
+            font-weight: 400;
+            font-size: 16px;
+        }
+
+        .candidate-project-year,
+        .candidate-school-year {
+            font-weight: 500;
+            font-size: 14px;
+            color: #797979;
+        }
+
+        .candidate-proj-desc {
+            font-weight: 400;
+            font-size: 14px;
+            text-align: justify;
+        }
+
+        .candidate-skilset {
+            font-weight: 400;
+            font-size: 14px;
+            list-style-type: none;
+            padding-inline-start: unset;
+            margin: 0px;
+            word-spacing: 5px;
+        }
+
+        .negative-margin {
+            margin-top: -20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+        <div class="flex-container">
+            <div class="flex-item-name">
+                <div class="candidate-name">
+                    <span>
+                        <%- name.first %>
+                            &nbsp;
+                            <%- name.last %>
+                    </span>
+                </div>
+                <div class="candidate-role">
+                    <span>
+                        <%- experience.current.designation %>
+                    </span>
+                </div>
+            </div>
+            <div class="flex-item-details">
+                <div class="candidate-details">
+                    <span>
+                        <a href="mailto:<%- contact.email %>" target="_blank">
+                            <%- contact.email %>
+                        </a>
+                    </span>
+                </div>
+                <div class="candidate-details">
+                    <span>
+                        <a href="tel:<%- contact.phone %>">
+                            <%- contact.phone %>
+                        </a>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="flex-container">
+            <div class="flex-item-summary">
+                <div class="candidate-objective">
+                    <span>
+                        <%- bio %>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <% for(var i=0; i < experience.companies.length; i++) { %>
+            <div class="flex-container <%- i == 0 ? '' : 'negative-margin' %>">
+                <div class="flex-item-name">
+                    <div class="candidate-experience">
+                        <span>
+                            <% if (i===0) { %>
+                                Experience
+                                <% } %>
+                        </span>
+                    </div>
+                </div>
+                <div class="flex-item-details">
+                    <div class="candidate-role">
+                        <span>
+                            <%- experience.companies[i].designation %>
+                        </span>
+                    </div>
+                    <div class="candidate-project">
+                        <span>
+                            <%- experience.companies[i].name %>
+                        </span>
+                    </div>
+                    <div class="candidate-project-year">
+                        <span>
+                            <%- experience.companies[i].start %>
+                                &nbsp;-&nbsp;
+                                <%- experience.companies[i].end %>
+                        </span>
+                    </div>
+                </div>
+                <div class="flex-item-desc">
+                    <div class="candidate-proj-desc">
+                        <span>
+                            <%- experience.companies[i].description %>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+                <% for(var i=0; i < education.institutions.length; i++) { %>
+                    <div class="flex-container <%- i == 0 ? '' : 'negative-margin' %>">
+                        <div class="flex-item-name">
+                            <span class="candidate-education">
+                                <span>
+                                    <% if (i===0) { %>
+                                        Education
+                                        <% } %>
+                                </span>
+                            </span>
+                        </div>
+                        <div class="flex-item-school">
+                            <div class="candidate-school">
+                                <span>
+                                    <%- education.institutions[i].name %>
+                                </span>
+                            </div>
+                            <div class="candidate-degree">
+                                <span>
+                                    <%- education.institutions[i].degree %>
+                                        &nbsp;-&nbsp;
+                                        <%- education.institutions[i].major %>
+                                </span>
+                            </div>
+                            <div class="candidate-school-year">
+                                <span>
+                                    <%- education.institutions[i].start %>
+                                        &nbsp;-&nbsp;
+                                        <%- education.institutions[i].end %>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+                        <div class="flex-container">
+                            <div class="flex-item-name">
+                                <span class="candidate-skills">Skills</span>
+                            </div>
+                            <div class="flex-item-skillset">
+                                <ul class="candidate-skilset">
+                                    <% for(var i=0; i < skills.length; i++) { %>
+                                        <li>
+                                            <%- skills[i] %>
+                                        </li>
+                                        <% } %>
+                                </ul>
+                            </div>
+                        </div>
+    </div>
+    <script type="module" src="/main.js"></script>
+</body>
+
+</html>
