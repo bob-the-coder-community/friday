@@ -13,7 +13,7 @@ const sleep = (s: number) => new Promise((resolve) => {
     }, s * 1000);
 });
 
-const Init = (request: functions.https.Request, response: functions.Response) => withMiddleWare(request, response, async (error: Error) => {
+const Init = (request: functions.https.Request, response: functions.Response) => withMiddleWare(request, response, cors, async (error: Error) => {
     try {
         if (error) {
             return response.json({statusCode: 500, body: "Internal Server Error"});
