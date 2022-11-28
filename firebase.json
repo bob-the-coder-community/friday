@@ -44,7 +44,7 @@
       },
       {
         "source": "/godseye/list",
-        "function": "godseye-List"
+        "function": "godseye-list"
       },
       {
         "source": "/candidates/list",
@@ -53,6 +53,10 @@
       {
         "source": "/candidates/profile",
         "function": "candidates-profile"
+      },
+      {
+        "source": "/candidates/resume",
+        "function": "candidates-resume"
       }
     ]
   },

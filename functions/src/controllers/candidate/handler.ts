@@ -2,8 +2,9 @@ import {withMiddleWare} from "@utils/withMiddleware";
 import * as functions from "firebase-functions";
 import {Service} from "@controllers/candidate/candidate.service";
 import {Template} from "@services/template";
+import {cors} from "@middlewares/cors";
 
-const List = (request: functions.https.Request, response: functions.Response) => withMiddleWare(request, response, async (error: Error) => {
+const List = (request: functions.https.Request, response: functions.Response) => withMiddleWare(request, response, cors, async (error: Error) => {
     try {
         if (error) {
             return response.json({statusCode: 500, body: "Internal Server Error"});
@@ -39,7 +40,7 @@ const List = (request: functions.https.Request, response: functions.Response) =>
     }
 });
 
-const Profile = (request: functions.https.Request, response: functions.Response) => withMiddleWare(request, response, async (error: Error) => {
+const Profile = (request: functions.https.Request, response: functions.Response) => withMiddleWare(request, response, cors, async (error: Error) => {
     try {
         if (error) {
             return response.json({statusCode: 500, body: "Internal Server Error"});
@@ -74,7 +75,7 @@ const Profile = (request: functions.https.Request, response: functions.Response)
     }
 });
 
-const Resume = (request: functions.https.Request, response: functions.Response) => withMiddleWare(request, response, async (error: Error) => {
+const Resume = (request: functions.https.Request, response: functions.Response) => withMiddleWare(request, response, cors, async (error: Error) => {
     try {
         if (error) {
             return response.json({statusCode: 500, body: "Internal Server Error"});
@@ -95,7 +96,7 @@ const Resume = (request: functions.https.Request, response: functions.Response) 
         const report = await Template.Render(profile, "resume/v1.ejs");
 
         response.write(report);
-        response.end();
+        return response.end();
     } catch (err) {
         console.error(err);
         return response.json({statusCode: 500, body: "Internal Server Error"});
